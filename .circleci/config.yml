@@ -2,15 +2,19 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/elixir:1.10.4-alpine
+      - image: circleci/elixir:1.10.4
         environment:
           MIX_ENV: test
     steps:
       - checkout
 
       - run:
-          name: Install Hex & Rebar
-          command: mix local.hex --force && mix local.rebar --force
+          name: Install Hex
+          command: mix local.hex --force
+
+      - run:
+          name: Install Rebar
+          command: mix local.rebar --force
 
       - run:
           name: Mix deps.get
@@ -21,9 +25,13 @@ jobs:
           command: mix compile
 
       - run:
+          name: Check format
+          command: mix format --check-formatted
+
+      - run:
           name: Running mix test
           command: mix test
 
       - run:
-          name: Message finish build
+          name: Finish build
           command: echo "finish build"
