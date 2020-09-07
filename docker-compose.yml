@@ -1,0 +1,12 @@
+version: "3"
+services:
+  web:
+    build: .
+
+    # phoenix使っておらずport設定してないので、コンテナ起動永続化させるため以下設定しておく
+    tty: true
+
+    working_dir: /app
+
+    volumes:
+      - .:/app
