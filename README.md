@@ -1,8 +1,8 @@
 # CircleCI and Elixir
 
-<!-- [![miolab](https://circleci.com/gh/miolab/circleci_elixir.svg?style=svg)](https://github.com/miolab/circleci_elixir) -->
+[![miolab](https://circleci.com/gh/miolab/circleci_elixir.svg?style=svg)](https://github.com/miolab/circleci_elixir)
 
-__Elixir__ のDocker開発環境に __CircleCI__ を連携します
+__Elixir__ の __Docker__ 開発環境を構築し、__CircleCI__ と連携します
 
 ### 参考
 
