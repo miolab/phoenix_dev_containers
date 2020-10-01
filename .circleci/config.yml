@@ -4,7 +4,7 @@ jobs:
     machine:
       image: ubuntu-1604:202007-01
 
-    # working_directory: ~/app
+    working_directory: ~/app
 
     steps:
       - checkout
@@ -25,19 +25,17 @@ jobs:
       #       curl -L https://github.com/docker/compose/releases/download/1.26.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
       #       chmod +x /usr/local/bin/docker-compose
 
-      # - setup_remote_docker
+      - run:
+          name: Build Docker
+          command: |
+            set -x
+            docker-compose build
 
-      # - run:
-      #     name: Build Docker
-      #     command: |
-      #       set -x
-      #       docker-compose build
-
-      # - run:
-      #     name: Run Docker container
-      #     command: |
-      #       set -x
-      #       docker-compose up -d
+      - run:
+          name: Run Docker container
+          command: |
+            set -x
+            docker-compose up -d
 
       # - run:
       #     name: mix
