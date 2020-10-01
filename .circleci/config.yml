@@ -21,6 +21,12 @@ jobs:
             set -x
             docker-compose up
 
+      - run:
+          name: IEx
+          command: |
+            docker-compose exec app iex
+            System.stop
+
       # - run:
       #     name: mix
       #     command: docker-compose exec app mix archive
