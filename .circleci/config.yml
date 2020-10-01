@@ -19,11 +19,7 @@ jobs:
           name: Run Docker container
           command: |
             set -x
-            docker-compose up
-
-      - run:
-          name: IEx
-          command: |
+            docker-compose up -d
             docker-compose exec app iex
             System.stop
 
