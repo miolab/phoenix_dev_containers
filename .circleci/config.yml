@@ -9,7 +9,7 @@ jobs:
     steps:
       - checkout
 
-      - run: docker system prune
+      - run: docker system prune --force
       - run:
           name: Build and Run Docker
           command: |
