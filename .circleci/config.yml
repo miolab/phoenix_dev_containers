@@ -16,7 +16,7 @@ jobs:
             set -x
             docker-compose build
             docker-compose up -d
-            docker-compose run --rm app bash -c "mix local.hex && mix --version"
+            docker-compose run --rm app sh -c "mix --version"
 
       # - run:
       #     name: Run Docker container
