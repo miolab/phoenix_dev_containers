@@ -10,22 +10,24 @@ jobs:
       - checkout
 
       - run:
-          name: Build Docker
+          name: Build and Run Docker
           command: |
             set -x
             docker-compose build
-
-      - run:
-          name: Run Docker container
-          command: |
-            set -x
             docker-compose up -d
             mix test
 
-      - run:
-          name: Mix test
-          command: |
-            docker-compose exec app bash -c "cd my_app && mix test"
+      # - run:
+      #     name: Run Docker container
+      #     command: |
+      #       set -x
+      #       docker-compose up -d
+      #       mix test
+
+      # - run:
+      #     name: Mix test
+      #     command: |
+      #       docker-compose exec app bash -c "cd my_app && mix test"
 
       # - run:
       #     name: mix
