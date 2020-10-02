@@ -14,7 +14,7 @@ RUN apt-get update -y && \
   sudo \
   tar
 
-RUN mix local.hex --force
+RUN yes | mix local.hex
 RUN mix local.rebar --force
 RUN mix archive.install hex phx_new 1.5.3 --force
 
