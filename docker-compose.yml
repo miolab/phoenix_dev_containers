@@ -1,12 +1,33 @@
 version: "3"
+
+# networks:
+#   backend:
+#     driver: bridge
+
 services:
-  web:
-    build: .
-
-    # phoenix使っておらずport設定してないので、コンテナ起動永続化させるため以下設定しておく
-    tty: true
-
-    working_dir: /app
-
+  app:
+    build: ./app
     volumes:
-      - .:/app
+      - ./app:/usr/src/app
+    # working_dir: /app
+    ports:
+      - "4000:4000"
+    stdin_open: true
+    tty: true
+    command: sh -c "cd my_app && mix phx.server"
+
+    # networks:
+    #   - backend
+
+  # postgres:
+  #   build: ./db
+  #   volumes:
+  #     - ./db/.data/hello/postgres:var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     - POSTGRES_DB=${POSTGRES_DB}
+  #     - POSTGRES_USER=${POSTGRES_USER}
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    # networks:
+    #   - backend
