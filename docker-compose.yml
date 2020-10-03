@@ -14,7 +14,7 @@ services:
       - "4000:4000"
     stdin_open: true
     tty: true
-    command: sh -c "cd my_app && mix phx.server"
+    command: sh -c "pwd && ls && cd my_app && mix phx.server"
 
     # networks:
     #   - backend
