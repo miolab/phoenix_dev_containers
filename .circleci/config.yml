@@ -14,6 +14,7 @@ jobs:
       - run:
           name: Confirm directory state
           command: |
+            set -x
             pwd && ls
             echo "ls app/my_app"
             ls app/my_app
@@ -32,16 +33,17 @@ jobs:
             docker-compose up -d
             sleep 10
 
+      - run:
+          name: Mix test
+          command: |
+            set -x
+            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix test"
+
       # - run:
       #     name: Direct run Docker container and Confirm mix test
       #     command: |
       #       set -x
       #       docker-compose run --rm app sh -c "mix --version & mix test"
-
-      # - run:
-      #     name: Mix test
-      #     command: |
-      #       docker-compose exec app bash -c "cd my_app && mix test"
 
       # - run:
       #     name: mix
