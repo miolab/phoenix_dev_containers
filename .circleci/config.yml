@@ -12,7 +12,10 @@ jobs:
       - run: docker system prune --force
       - run:
           name: Confirm directory state
-          command: pwd && ls
+          command: |
+            pwd && ls
+            echo "ls app/"
+            ls app/
 
       - run:
           name: Build and Run Docker container
