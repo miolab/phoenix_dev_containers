@@ -30,7 +30,7 @@ jobs:
           name: Mix deps.get
           command: |
             set -x
-            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix deps.get"
+            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix deps.clean --all && mix deps.get"
 
       - run:
           name: Run Docker container
