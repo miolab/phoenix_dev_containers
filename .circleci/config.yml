@@ -44,7 +44,7 @@ jobs:
           name: Mix test
           command: |
             set -x
-            docker-compose run --rm app sh -c "pwd && ls && mix test"
+            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix test"
 
       # - run:
       #     name: Direct run Docker container and Confirm mix test
