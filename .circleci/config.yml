@@ -19,18 +19,24 @@ jobs:
             ls app/my_app
 
       - run:
-          name: Build and Run Docker container
+          name: Build Docker container
           command: |
             set -x
             docker-compose build
-            docker-compose up -d
-            docker-compose run --rm app sh -c "mix --version & mix test"
+            docker-compose run --rm app sh -c "mix --version"
 
       - run:
-          name: Direct run Docker container and Confirm mix test
+          name: Run Docker container
           command: |
             set -x
-            docker-compose run --rm app sh -c "mix --version & mix test"
+            docker-compose up -d
+            sleep 10
+
+      # - run:
+      #     name: Direct run Docker container and Confirm mix test
+      #     command: |
+      #       set -x
+      #       docker-compose run --rm app sh -c "mix --version & mix test"
 
       # - run:
       #     name: Mix test
@@ -40,6 +46,8 @@ jobs:
       # - run:
       #     name: mix
       #     command: docker-compose exec app mix archive
+
+      - run: docker-compose down
 
       - run:
           name: Finish message
