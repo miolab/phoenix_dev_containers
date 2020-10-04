@@ -52,12 +52,6 @@ jobs:
             set -x
             docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix test"
 
-      - run:
-          name: Mix phx.server run
-          command: |
-            set -x
-            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix phx.server"
-
       - run: docker-compose down
 
       - run:
