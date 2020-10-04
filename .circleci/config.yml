@@ -41,7 +41,7 @@ jobs:
             docker ps -f status=running
 
       - run:
-          name: Confirm exit mix archive
+          name: Confirm exist mix archive
           command: |
             set -x
             docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix archive"
