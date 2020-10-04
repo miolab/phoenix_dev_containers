@@ -21,3 +21,5 @@ RUN mix archive.install hex phx_new 1.5.3 --force
 RUN curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 RUN apt-get install -y nodejs
 RUN apt-get clean
+
+CMD [ "mix", "phx.server" ]
