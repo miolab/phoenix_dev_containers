@@ -10,29 +10,57 @@ jobs:
       - checkout
 
       - run: docker system prune --force
+
       - run:
-          name: Build and Run Docker
+          name: Confirm directory state
+          command: |
+            set -x
+            pwd && ls
+            echo "ls app/my_app"
+            ls app/my_app
+
+      - run:
+          name: Build Docker container
           command: |
             set -x
             docker-compose build
-            docker-compose up -d
             docker-compose run --rm app sh -c "mix --version"
+
+      - run:
+          name: Mix deps.get
+          command: |
+            set -x
+            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix deps.clean --all && mix deps.get"
+
+      - run:
+          name: Npm install in assets directory
+          command: |
+            set -x
+            docker-compose run --rm app sh -c "pwd && ls && cd my_app/assets && npm install"
 
       # - run:
       #     name: Run Docker container
       #     command: |
       #       set -x
       #       docker-compose up -d
-      #       mix test
+      #       sleep 10
+      #       docker ps -f status=running
+      #       docker-compose logs
 
-      # - run:
-      #     name: Mix test
-      #     command: |
-      #       docker-compose exec app bash -c "cd my_app && mix test"
+      - run:
+          name: Confirm exist mix archive
+          command: |
+            set -x
+            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix archive"
 
-      # - run:
-      #     name: mix
-      #     command: docker-compose exec app mix archive
+      - run:
+          name: Mix test
+          command: |
+            set -x
+            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix test"
+            docker-compose up
+
+      # - run: docker-compose down
 
       - run:
           name: Finish message

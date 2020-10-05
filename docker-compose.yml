@@ -14,7 +14,7 @@ services:
       - "4000:4000"
     stdin_open: true
     tty: true
-    command: sh -c "cd my_app && mix phx.server"
+    command: sh -c "pwd && ls && cd my_app && npm install && mix phx.server"
 
     # networks:
     #   - backend
@@ -29,5 +29,5 @@ services:
   #     - POSTGRES_DB=${POSTGRES_DB}
   #     - POSTGRES_USER=${POSTGRES_USER}
   #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    # networks:
-    #   - backend
+  # networks:
+  #   - backend
