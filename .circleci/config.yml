@@ -39,6 +39,7 @@ jobs:
             docker-compose up -d
             sleep 10
             docker ps -f status=running
+            docker-compose logs
 
       - run:
           name: Confirm exist mix archive
@@ -51,6 +52,7 @@ jobs:
           command: |
             set -x
             docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix test"
+            docker-compose up
 
       - run: docker-compose down
 
