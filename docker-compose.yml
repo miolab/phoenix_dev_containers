@@ -13,14 +13,18 @@ services:
       - "4000:4000"
     stdin_open: true
     tty: true
-    command: sh -c "pwd && ls && cd my_app && npm install && mix phx.server"
+    command:
+      sh -c
+        "cd ${PROJECT_NAME} &&
+        npm install &&
+        mix phx.server"
     networks:
       - backend
 
   postgres:
     build: ./db
     volumes:
-      - ./db/.data/my_app/postgres:/var/lib/postgresql/data
+      - ./db/.data/${PROJECT_NAME}/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:
