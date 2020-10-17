@@ -1,33 +1,32 @@
 version: "3"
 
-# networks:
-#   backend:
-#     driver: bridge
+networks:
+  backend:
+    driver: bridge
 
 services:
   app:
     build: ./app
     volumes:
       - ./app:/usr/src/app
-    # working_dir: /app
     ports:
       - "4000:4000"
     stdin_open: true
     tty: true
     command: sh -c "pwd && ls && cd my_app && npm install && mix phx.server"
+    networks:
+      - backend
 
-    # networks:
-    #   - backend
-
-  # postgres:
-  #   build: ./db
-  #   volumes:
-  #     - ./db/.data/hello/postgres:var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
-  #   environment:
-  #     - POSTGRES_DB=${POSTGRES_DB}
-  #     - POSTGRES_USER=${POSTGRES_USER}
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  # networks:
-  #   - backend
+  postgres:
+    build: ./db
+    volumes:
+      - ./db/.data/my_app/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    restart: always
+    networks:
+      - backend
