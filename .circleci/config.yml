@@ -4,12 +4,8 @@ jobs:
     machine:
       image: ubuntu-1604:202007-01
 
-    working_directory: ~/app
-
     steps:
       - checkout
-
-      - run: docker system prune --force
 
       - run:
           name: Confirm directory state
@@ -60,8 +56,9 @@ jobs:
             docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix test"
             docker-compose up
 
-      # - run: docker-compose down
-
       - run:
-          name: Finish message
-          command: echo "finish build."
+          name: Down Docker container and Finish pipeline
+          command: |
+            set -x
+            docker-compose down
+            echo "Finish pipeline"
