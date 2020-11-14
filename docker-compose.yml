@@ -22,7 +22,7 @@ services:
     networks:
       - backend
 
-  postgres:
+  db:
     build: ./db
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
