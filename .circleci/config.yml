@@ -30,7 +30,7 @@ jobs:
             ls db
 
       - run:
-          name: Build Docker container
+          name: Build Docker containers
           command: |
             set -x
             docker-compose build
@@ -44,11 +44,10 @@ jobs:
             docker-compose run --rm app sh -c "pwd && ls && cd my_app/assets && npm install"
 
       - run:
-          name: Mix deps.get
+          name: Run Docker containers
           command: |
             set -x
             docker-compose up -d
-            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix deps.clean --all && mix deps.get"
             sleep 5
             docker ps -f status=running
             docker-compose logs
