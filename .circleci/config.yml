@@ -16,6 +16,18 @@ jobs:
             ls app/my_app
 
       - run:
+          name: Set Environment Variables for docker-compose
+          command: |
+            set -x
+            touch .env
+            echo PROJECT_NAME=$PROJECT_NAME >> .env
+            echo POSTGRES_USER=$POSTGRES_USER >> .env
+            echo POSTGRES_PASSWORD=$POSTGRES_PASSWORD >> .env
+            echo POSTGRES_DB=$POSTGRES_DB >> .env
+            echo POSTGRES_PORT=$POSTGRES_PORT >> .env
+            cat .env
+
+      - run:
           name: Build Docker container
           command: |
             set -x
@@ -26,22 +38,17 @@ jobs:
           name: Mix deps.get
           command: |
             set -x
+            docker-compose up -d
             docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix deps.clean --all && mix deps.get"
+            sleep 5
+            docker ps -f status=running
+            docker-compose logs
 
       - run:
           name: Npm install in assets directory
           command: |
             set -x
             docker-compose run --rm app sh -c "pwd && ls && cd my_app/assets && npm install"
-
-      # - run:
-      #     name: Run Docker container
-      #     command: |
-      #       set -x
-      #       docker-compose up -d
-      #       sleep 10
-      #       docker ps -f status=running
-      #       docker-compose logs
 
       - run:
           name: Confirm exist mix archive
@@ -54,11 +61,10 @@ jobs:
           command: |
             set -x
             docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix test"
-            docker-compose up
 
       - run:
           name: Down Docker container and Finish pipeline
           command: |
             set -x
-            docker-compose down
+            docker-compose down --rmi all --volumes --remove-orphans
             echo "Finish pipeline"
