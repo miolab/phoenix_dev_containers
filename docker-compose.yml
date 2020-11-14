@@ -15,9 +15,11 @@ services:
     tty: true
     command:
       sh -c
-        "cd ${PROJECT_NAME} &&
+        "cd ${PROJECT_NAME}/assets &&
         npm install &&
+        node node_modules/webpack/bin/webpack.js --mode development &&
         npm rebuild node-sass &&
+        cd ../ &&
         mix phx.server"
     networks:
       - backend
