@@ -35,7 +35,9 @@ jobs:
             set -x
             docker-compose build
             docker-compose run --rm app sh -c "mix --version"
+            docker-compose run --rm app mix archive
             docker-compose run --rm db sh -c "psql --version"
+            docker-compose run --rm app bash -c "node --version && npm --version"
 
       - run:
           name: Mix deps.get
@@ -51,12 +53,6 @@ jobs:
             sleep 5
             docker ps -f status=running
             docker-compose logs
-
-      - run:
-          name: Confirm exist mix archive
-          command: |
-            set -x
-            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix archive"
 
       - run:
           name: Mix test
