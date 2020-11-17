@@ -45,6 +45,15 @@
   psql (PostgreSQL) 12.4
   ```
 
+- Node & npm
+
+  ```
+  $ docker-compose run --rm app bash -c "node --version && npm --version"
+  Creating circleci_elixir_app_run ... done
+  v14.15.1
+  6.14.8
+  ```
+
 ## :star: 初期ディレクトリ構成
 
 ```bash
