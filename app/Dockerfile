@@ -14,12 +14,14 @@ RUN apt-get update -y && \
   sudo \
   tar
 
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+RUN apt-get install -y nodejs
+RUN npm install npm@latest -g
+
 RUN yes | mix local.hex
 RUN mix local.rebar --force
 RUN mix archive.install hex phx_new 1.5.6 --force
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-RUN apt-get install -y nodejs
 RUN apt-get clean
 
 CMD [ "mix", "phx.server" ]
