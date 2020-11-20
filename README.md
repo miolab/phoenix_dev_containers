@@ -6,39 +6,71 @@
 
 ---
 
-## :star: [WIP] 使い方
-
-## :star: [WIP] ディレクトリ構成
-
 ## :star: 実行環境
 
 - 基本開発環境
 
   |                | バージョン |
   | :------------- | :--------- |
-  | Mac            |            |
+  | macOS          |            |
   | Docker         | 19.03.13   |
   | Docker-compose | 1.27.4     |
 
-- Docker container image バージョン
+### Container Image バージョン
 
-  - Elixir
+- Elixir
 
-    ```
-    $ docker-compose run app elixir --version
-    Creating circleci_elixir_app_run ... done
-    Erlang/OTP 22 [erts-10.7.2.3] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:1] [hipe]
+  ```
+  $ docker-compose run --rm app elixir --version
+  Creating circleci_elixir_app_run ... done
+  Erlang/OTP 23 [erts-11.1.2] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:1] [hipe]
 
-    Elixir 1.10.4 (compiled with Erlang/OTP 22)
-    ```
+  Elixir 1.11.2 (compiled with Erlang/OTP 23)
+  ```
 
-  - PostgreSQL
+- Phoenix
 
-    ```
-    $ docker-compose run postgres psql --version
-    Creating circleci_elixir_postgres_run ... done
-    psql (PostgreSQL) 12.4
-    ```
+  ```
+  $ docker-compose run --rm app mix archive
+  Creating circleci_elixir_app_run ... done
+  * hex-0.20.6
+  * phx_new-1.5.6
+  ```
+
+- PostgreSQL
+
+  ```
+  $ docker-compose run --rm db psql --version
+  Creating circleci_elixir_db_run ... done
+  psql (PostgreSQL) 12.4
+  ```
+
+- Node & npm
+
+  ```
+  $ docker-compose run --rm app bash -c "node --version && npm --version"
+  Creating circleci_elixir_app_run ... done
+  v14.15.1
+  6.14.8
+  ```
+
+## :star: 初期ディレクトリ構成
+
+```bash
+$ tree -L 2 -a
+.
+├── .circleci
+│   └── config.yml
+├── .env.sample
+├── README.md
+├── app
+│   └── Dockerfile
+├── db
+│   └── Dockerfile
+└── docker-compose.yml
+```
+
+## :star: [WIP] 使い方
 
 ---
 

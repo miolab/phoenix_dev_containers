@@ -1,13 +1,32 @@
+# Phoenix
+# https://github.com/phoenixframework/phoenix/blob/master/.gitignore
 /_build
-/cover
 /deps
 /doc
-/.fetch
+/tmp
+/node_modules
+
+/assets/node_modules
+
+/installer/_build
+/installer/tmp
+/installer/doc
+/installer/deps
+
+/integration_test/_build
+/integration_test/deps
+
 erl_crash.dump
+
+# Elixir
+# https://github.com/github/gitignore/blob/master/Elixir.gitignore
+/cover
+/.fetch
 *.ez
 *.beam
 /config/*.secret.exs
 .elixir_ls/
 
+# User setting
 .env
 /db/postgres/
