@@ -40,6 +40,18 @@ jobs:
             docker-compose run --rm app bash -c "node --version && npm --version"
 
       - run:
+          name: Mix deps.get
+          command: |
+            set -x
+            docker-compose run --rm app sh -c "cd my_app && pwd && ls && mix deps.get && mix deps.compile"
+
+      - run:
+          name: Npm install in assets directory
+          command: |
+            set -x
+            docker-compose run --rm app sh -c "cd my_app/assets && pwd && ls && npm install && node node_modules/webpack/bin/webpack.js --mode development"
+
+      - run:
           name: Run Docker containers
           command: |
             set -x
