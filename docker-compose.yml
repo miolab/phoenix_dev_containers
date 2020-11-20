@@ -10,16 +10,12 @@ services:
     volumes:
       - ./app:/usr/src/app
     ports:
-      - "4000:4000"
+      - 4000:4000
     stdin_open: true
     tty: true
     command:
       sh -c
-        "cd ${PROJECT_NAME}/assets &&
-        npm install &&
-        node node_modules/webpack/bin/webpack.js --mode development &&
-        npm rebuild node-sass &&
-        cd ../ &&
+        "cd ${PROJECT_NAME}/ &&
         mix phx.server"
     networks:
       - backend
@@ -31,7 +27,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - ${POSTGRES_PORT}:5432
     volumes:
       - ./db/postgres/tmp/data:/var/lib/postgresql/data
     restart: always
