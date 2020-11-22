@@ -17,8 +17,8 @@ defmodule MyAppWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :index)
-    get("/aboutme", AboutmeController, :index)
     resources "/users", UserController    # -> add
+    get("/aboutme", AboutmeController, :index)
   end
 
   # Other scopes may use custom stacks.
