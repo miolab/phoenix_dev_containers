@@ -70,7 +70,68 @@ $ tree -L 2 -a
 └── docker-compose.yml
 ```
 
-## :star: [WIP] 使い方
+## :star: 使い方
+
+### ビルド 〜 Phoenix コンテナ立ち上げ
+
+- PJ 準備
+
+  ```bash
+  $ cp .env.sample .env
+  ```
+
+  ```bash
+  $ docker-compose build
+      .
+      .
+  ```
+
+  ```bash
+  $ docker-compose run --rm app mix phx.new my_app
+      .
+      .
+    (途中に出てくる `Fetch and install dependencies? [Yn]` は、`Y` で進める)
+  ```
+
+- 生成されたファイルの中身を書き換える
+
+  app/my_app/config/dev.exs
+
+  ```elixir
+  # Configure your database
+  config :my_app, MyApp.Repo,
+    username: "postgres",  # --> update
+    password: "password",  # --> update
+    database: "testdb",    # --> update
+    hostname: "db",        # --> update
+  ```
+
+- コンテナ起動
+
+  ```bash
+  $ docker-compose up -d
+  ```
+
+  ```bash
+  $ docker-compose ps
+
+          Name                       Command               State            Ports
+  ----------------------------------------------------------------------------------------
+  circleci_elixir_app_1   sh -c cd my_app/ && mix ph ...   Up      0.0.0.0:4000->4000/tcp
+  circleci_elixir_db_1    docker-entrypoint.sh postgres    Up      0.0.0.0:15432->5432/tcp
+  ```
+
+  ```bash
+  $ docker-compose run --rm app bash -c "cd my_app && mix ecto.create"
+  ```
+
+  ```bash
+  $ docker-compose restart app
+  ```
+
+  - ブラウザ確認 [`localhost:4000`](localhost:4000)
+
+  - `docker-compose logs` 叩いて、ログ中にエラーぽいのが出てなかったらヨシ！
 
 ---
 
