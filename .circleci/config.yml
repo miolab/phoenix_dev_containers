@@ -60,12 +60,11 @@ jobs:
             docker ps -f status=running
             docker-compose logs
 
-      # TODO: prepare MyApp.Repo
-      # - run:
-      #     name: Mix test
-      #     command: |
-      #       set -x
-      #       docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix test"
+      - run:
+          name: Mix test
+          command: |
+            set -x
+            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix test"
 
       - run:
           name: Down Docker container and Finish pipeline
