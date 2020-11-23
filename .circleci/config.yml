@@ -49,7 +49,7 @@ jobs:
           name: Npm install in assets directory
           command: |
             set -x
-            docker-compose run --rm app sh -c "cd my_app/assets && pwd && ls && npm install && node node_modules/webpack/bin/webpack.js --mode development"
+            docker-compose run --rm app sh -c "cd my_app/assets && pwd && ls && npm init && npm install && node node_modules/webpack/bin/webpack.js --mode development"
 
       - run:
           name: Run Docker containers
@@ -64,6 +64,7 @@ jobs:
           name: Mix test
           command: |
             set -x
+            docker-compose restart
             docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix test"
 
       - run:
