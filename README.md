@@ -1,8 +1,8 @@
-# CircleCI and Elixir
+# Phoenix Dev experiment containers
 
 [![miolab](https://circleci.com/gh/miolab/circleci_elixir.svg?style=svg)](https://github.com/miolab/circleci_elixir)
 
-**Elixir** の **Docker** 開発環境を構築し、**CircleCI** と連携します
+**Phoenix (Elixir)** の **Docker** 開発環境を構築します
 
 ---
 
@@ -16,7 +16,7 @@
   | Docker         | 19.03.13   |
   | Docker-compose | 1.27.4     |
 
-### Container Image バージョン
+### __Container Image バージョン__
 
 - Elixir
 
@@ -54,7 +54,7 @@
   6.14.8
   ```
 
-## :star: 初期ディレクトリ構成
+### __初期ディレクトリ構成__
 
 ```bash
 $ tree -L 2 -a
@@ -72,9 +72,9 @@ $ tree -L 2 -a
 
 ## :star: 使い方
 
-### ビルド 〜 Phoenix コンテナ立ち上げ
+### __ビルド 〜 Phoenix コンテナ立ち上げ__
 
-- PJ 準備
+- プロジェクト準備
 
   ```bash
   $ cp .env.sample .env
@@ -100,11 +100,13 @@ $ tree -L 2 -a
   ```elixir
   # Configure your database
   config :my_app, MyApp.Repo,
-    username: "postgres",  # --> update
-    password: "password",  # --> update
-    database: "testdb",    # --> update
-    hostname: "db",        # --> update
+    username: "postgres",  # <-- update
+    password: "password",  # <-- update
+    database: "testdb",    # <-- update
+    hostname: "db",        # <-- update
   ```
+
+  - `.env` で設定した環境変数に書き換える
 
 - コンテナ起動
 
@@ -129,13 +131,15 @@ $ tree -L 2 -a
   $ docker-compose restart app
   ```
 
-  - ブラウザ確認 [`localhost:4000`](localhost:4000)
+- ブラウザ確認 [`localhost:4000`](localhost:4000)
 
-  - `docker-compose logs` 叩いて、ログ中にエラーぽいのが出てなかったらヨシ！
+  - `docker-compose logs` 叩いて、ログ中にエラーぽいのが出てないか確認しておく
+
+###
 
 ---
 
-### 参考
+## 参考
 
 - [公式 / 言語ガイド: Elixir](https://circleci.com/docs/ja/2.0/language-elixir/)
 
