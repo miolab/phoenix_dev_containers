@@ -95,7 +95,7 @@ $ tree -L 2 -a
 
 - 生成されたファイルの中身を書き換える
 
-  app/my_app/config/dev.exs
+  `app/my_app/config/dev.exs`
 
   ```elixir
   # Configure your database
@@ -106,7 +106,7 @@ $ tree -L 2 -a
     hostname: "db",        # <-- update
   ```
 
-  - `.env` で設定した環境変数に書き換える
+  - `.env` で設定した環境変数をつかいます
 
 - コンテナ起動
 
@@ -123,17 +123,107 @@ $ tree -L 2 -a
   circleci_elixir_db_1    docker-entrypoint.sh postgres    Up      0.0.0.0:15432->5432/tcp
   ```
 
+  - ブラウザ確認 [`localhost:4000`](localhost:4000)
+
+  - `docker-compose logs` 叩いて、ログ中にエラーぽいのが出てないか念のため確認しておく
+
+### __新規ページを追加する__
+
+- 現在のルーティングを確認
+
   ```bash
-  $ docker-compose run --rm app bash -c "cd my_app && mix ecto.create"
+  $ docker-compose run --rm app bash -c "cd my_app && mix phx.routes"
+
+  Creating circleci_elixir_app_run ... done
+            page_path  GET  /                          MyAppWeb.PageController :index
+  live_dashboard_path  GET  /dashboard                 Phoenix.LiveView.Plug :home
+  live_dashboard_path  GET  /dashboard/:page           Phoenix.LiveView.Plug :page
+  live_dashboard_path  GET  /dashboard/:node/:page     Phoenix.LiveView.Plug :page
+            websocket  WS   /live/websocket            Phoenix.LiveView.Socket
+            longpoll  GET  /live/longpoll              Phoenix.LiveView.Socket
+            longpoll  POST  /live/longpoll             Phoenix.LiveView.Socket
+            websocket  WS   /socket/websocket          MyAppWeb.UserSocket
   ```
+
+以下の手順で、新規ページ `/aboutme` を追加します
+
+- ルーティング設定（アップデート）
+
+  `app/my_app/lib/my_app_web/router.ex`
+
+  ```elixir
+  scope "/", MyAppWeb do
+    pipe_through :browser
+
+    get "/", PageController, :index
+    get "/aboutme", AboutmeController, :index    # --> add
+  end
+  ```
+
+- コントローラー追加（新規作成）
+
+  `app/my_app/lib/my_app_web/controllers/aboutme_controller.ex`
+
+  ```elixir
+  defmodule MyAppWeb.AboutmeController do
+    use MyAppWeb, :controller
+
+    def index(conn, _params) do
+      render(conn, "index.html")
+    end
+  end
+  ```
+
+- ビュー追加（新規作成）
+
+  `app/my_app/lib/my_app_web/views/aboutme.ex`
+
+  ```elixir
+  defmodule MyAppWeb.AboutmeView do
+    use MyAppWeb, :view
+  end
+  ```
+
+- テンプレート追加（新規作成）
+
+  `app/my_app/lib/my_app_web/templates/aboutme/index.html.eex`
+
+  ```html
+  <section class="phx-hero">
+    <h1>オレオレコンテナをぜひ見てくれ</h1>
+  </section>
+  <section class="row">
+    <p>メリークリスマス！ 2020！<br>
+      プレゼンテッド・バイ im（あいえむ）</p>
+  </section>
+  ```
+
+- コンテナを再起動して、ルーティングを確認
 
   ```bash
   $ docker-compose restart app
   ```
 
-- ブラウザ確認 [`localhost:4000`](localhost:4000)
+  ```bash
+  $ docker-compose run --rm app bash -c "cd my_app && mix phx.routes"
 
-  - `docker-compose logs` 叩いて、ログ中にエラーぽいのが出てないか確認しておく
+  Creating circleci_elixir_app_run ... done
+            page_path  GET     /                          MyAppWeb.PageController :index
+        aboutme_path  GET     /aboutme                    MyAppWeb.AboutmeController :index
+  live_dashboard_path  GET     /dashboard                 Phoenix.LiveView.Plug :home
+  live_dashboard_path  GET     /dashboard/:page           Phoenix.LiveView.Plug :page
+  live_dashboard_path  GET     /dashboard/:node/:page     Phoenix.LiveView.Plug :page
+            websocket  WS      /live/websocket            Phoenix.LiveView.Socket
+            longpoll  GET     /live/longpoll              Phoenix.LiveView.Socket
+            longpoll  POST    /live/longpoll              Phoenix.LiveView.Socket
+            websocket  WS      /socket/websocket          MyAppWeb.UserSocket
+  ```
+
+  - `aboutme_path GET /aboutme MyAppWeb.AboutmeController :index` が追加できたことを確認しました
+
+  - ブラウザ確認 [`localhost:4000/aboutme`](localhost:4000/aboutme)
+
+    <img src="https://user-images.githubusercontent.com/33124627/99958502-d2507a80-2dcc-11eb-8ba3-b89612fb1f60.png" width="455px">
 
 ###
 
