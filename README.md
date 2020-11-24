@@ -82,6 +82,7 @@ $ tree -L 2 -a
 
   ```bash
   $ docker-compose build
+
       .
       .
   ```
@@ -340,7 +341,36 @@ $ tree -L 2 -a
 
     <img width="455px" alt="webui2" src="https://user-images.githubusercontent.com/33124627/100085143-07250600-2e8f-11eb-8bab-376015a398d6.png">
 
-###
+### __テスト__
+
+- テスト側のDB接続情報設定（アップデート）
+
+  `app/my_app/config/test.exs`
+
+  ```bash
+  config :my_app, MyApp.Repo,
+    username: "postgres",    # --> update
+    password: "password",    # --> update
+    database: "my_app_test#{System.get_env("MIX_TEST_PARTITION")}",
+    hostname: "db",    # --> update
+    pool: Ecto.Adapters.SQL.Sandbox
+  ```
+
+- テスト実行
+
+  ```bash
+  $ docker-compose exec app bash -c "cd my_app && mix test"
+
+  Compiling 23 files (.ex)
+  Generated my_app app
+  ...................
+
+  Finished in 0.9 seconds
+  19 tests, 0 failures
+
+  ```
+
+All Green でパスしていることを確認できました
 
 ---
 
