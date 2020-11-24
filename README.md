@@ -77,8 +77,16 @@ $ tree -L 2 -a
 - プロジェクト準備
 
   ```bash
+  $ git clone https://github.com/miolab/circleci_elixir.git
+
+  $ rm -rf app/my_app
+
   $ cp .env.sample .env
   ```
+
+  上記コマンドで、あらかじめ入っている `app/my_app` は削除しておいてください
+
+- ビルド〜プロジェクト作成
 
   ```bash
   $ docker-compose build
@@ -127,7 +135,7 @@ $ tree -L 2 -a
     hostname: "db",        # <-- update
   ```
 
-  - `.env` で設定した環境変数をつかいます
+  - `.env` で設定してある環境変数をつかいます
 
 - コンテナ起動
 
@@ -156,7 +164,7 @@ $ tree -L 2 -a
 
   - `docker-compose logs` 叩いて、ログ中にエラーぽいのが出てないか念のため確認しておく
 
-### __新規ページを追加する__
+### __新規ページを追加してみる__（任意）
 
 - 現在のルーティングを確認
 
@@ -335,11 +343,19 @@ $ tree -L 2 -a
 
   ```
 
+  マイグレーションを実行したら、コンテナを再起動しておきます
+
+  ```bash
+  $ docker-compose restart app
+  ```
+
   - ブラウザ確認 [`localhost:4000/users/new`](localhost:4000/users/new)
 
     <img width="455px" alt="webui1" src="https://user-images.githubusercontent.com/33124627/100085123-00968e80-2e8f-11eb-9d2a-63a9f0ca14d6.png">
 
     <img width="455px" alt="webui2" src="https://user-images.githubusercontent.com/33124627/100085143-07250600-2e8f-11eb-8bab-376015a398d6.png">
+
+    CRUD ページを作成できていることを確認できました
 
 ### __テスト__
 
@@ -370,11 +386,11 @@ $ tree -L 2 -a
 
   ```
 
-All Green でパスしていることを確認できました
+  All Green でパスしていることを確認できました
 
 ---
 
-## 参考
+## :book: 参考
 
 - [公式 / 言語ガイド: Elixir](https://circleci.com/docs/ja/2.0/language-elixir/)
 
