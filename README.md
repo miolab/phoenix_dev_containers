@@ -255,6 +255,93 @@ $ tree -L 2 -a
 
 ### __CRUD 設定__
 
+- かんたんにざっと設計
+
+  |実装要件||
+  |:--|:--|
+  |Context名|Accounts|
+  |スキーマ名|User|
+  |テーブル名|users|
+  |カラムと型|name:string email:string bio:string|
+
+- WebUI を作成
+
+  上記設計にしたがって、生成コマンド `mix phx.gen.html` を実行します
+
+  ```bash
+  $ docker-compose exec app bash -c "cd my_app && mix phx.gen.html Accounts User users name:string email:string bio:string"
+
+  * creating lib/my_app_web/controllers/user_controller.ex
+  * creating lib/my_app_web/templates/user/edit.html.eex
+  * creating lib/my_app_web/templates/user/form.html.eex
+  * creating lib/my_app_web/templates/user/index.html.eex
+  * creating lib/my_app_web/templates/user/new.html.eex
+  * creating lib/my_app_web/templates/user/show.html.eex
+  * creating lib/my_app_web/views/user_view.ex
+  * creating test/my_app_web/controllers/user_controller_test.exs
+  * creating lib/my_app/accounts/user.ex
+  * creating priv/repo/migrations/20201122221317_create_users.exs
+  * creating lib/my_app/accounts.ex
+  * injecting lib/my_app/accounts.ex
+  * creating test/my_app/accounts_test.exs
+  * injecting test/my_app/accounts_test.exs
+
+  Add the resource to your browser scope in lib/my_app_web/router.ex:
+
+      resources "/users", UserController
+
+
+  Remember to update your repository by running migrations:
+
+      $ mix ecto.migrate
+
+  ```
+
+- ルーティング設定（アップデート）
+
+  - 上記の結果表示にある
+
+    ```bash
+    Add the resource to your browser scope in lib/my_app_web/router.ex:
+
+        resources "/users", UserController
+    ```
+
+    にしたがい、ルーティング設定を行います
+
+  `app/my_app/lib/my_app_web/router.ex`
+
+  ```elixir
+  scope "/", MyAppWeb do
+    pipe_through(:browser)
+
+    get("/", PageController, :index)
+    resources "/users", UserController    # --> add
+    get("/aboutme", AboutmeController, :index)
+  end
+  ```
+
+- マイグレーション実行
+
+  ```bash
+  $ docker-compose exec app bash -c "cd my_app && mix ecto.migrate"
+
+  22:27:54.834 [info]  == Running 20201122221317 MyApp.Repo.Migrations.CreateUsers.change/0 forward
+
+  22:27:54.902 [info]  create table users
+
+  22:27:55.109 [info]  == Migrated 20201122221317 in 0.1s
+
+  ```
+
+  - ブラウザ確認 [`localhost:4000/users/new`](localhost:4000/users/new)
+
+    <img width="455px" alt="webui1" src="https://user-images.githubusercontent.com/33124627/100085123-00968e80-2e8f-11eb-9d2a-63a9f0ca14d6.png">
+
+    <img width="455px" alt="webui2" src="https://user-images.githubusercontent.com/33124627/100085143-07250600-2e8f-11eb-8bab-376015a398d6.png">
+
+###
+
 ---
 
 ## 参考
