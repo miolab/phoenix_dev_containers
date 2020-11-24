@@ -88,9 +88,29 @@ $ tree -L 2 -a
 
   ```bash
   $ docker-compose run --rm app mix phx.new my_app
+
       .
       .
     (途中に出てくる `Fetch and install dependencies? [Yn]` は、`Y` で進める)
+
+      .
+      .
+  We are almost there! The following steps are missing:
+
+      $ cd my_app
+
+  Then configure your database in config/dev.exs and run:
+
+      $ mix ecto.create
+
+  Start your Phoenix app with:
+
+      $ mix phx.server
+
+  You can also run your app inside IEx (Interactive Elixir) as:
+
+      $ iex -S mix phx.server
+
   ```
 
 - 生成されたファイルの中身を書き換える
@@ -121,6 +141,14 @@ $ tree -L 2 -a
   ----------------------------------------------------------------------------------------
   circleci_elixir_app_1   sh -c cd my_app/ && mix ph ...   Up      0.0.0.0:4000->4000/tcp
   circleci_elixir_db_1    docker-entrypoint.sh postgres    Up      0.0.0.0:15432->5432/tcp
+  ```
+
+  ```bash
+  $ docker-compose run --rm app bash -c "cd my_app && mix ecto.create"
+  ```
+
+  ```bash
+  $ docker-compose restart app
   ```
 
   - ブラウザ確認 [`localhost:4000`](localhost:4000)
@@ -225,7 +253,7 @@ $ tree -L 2 -a
 
     <img src="https://user-images.githubusercontent.com/33124627/99958502-d2507a80-2dcc-11eb-8ba3-b89612fb1f60.png" width="455px">
 
-###
+### __CRUD 設定__
 
 ---
 
