@@ -34,7 +34,7 @@
   $ docker-compose run --rm app mix archive
   Creating circleci_elixir_app_run ... done
   * hex-0.20.6
-  * phx_new-1.5.6
+  * phx_new-1.5.7
   ```
 
 - PostgreSQL

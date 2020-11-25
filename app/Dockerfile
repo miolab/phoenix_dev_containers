@@ -20,7 +20,7 @@ RUN npm install npm@latest -g
 
 RUN yes | mix local.hex
 RUN mix local.rebar --force
-RUN mix archive.install hex phx_new 1.5.6 --force
+RUN mix archive.install hex phx_new 1.5.7 --force
 
 RUN apt-get clean
 
