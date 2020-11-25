@@ -2,13 +2,13 @@
 
 [![miolab](https://circleci.com/gh/miolab/circleci_elixir.svg?style=svg)](https://github.com/miolab/circleci_elixir)
 
-**Phoenix (Elixir)** の **Docker** 開発環境を構築します
+Elixir製Webフレームワーク **Phoenix** の **Docker** 開発環境を構築します
 
 ---
 
 ## :star: 実行環境
 
-- 基本開発環境
+### 基本開発環境
 
   |                | バージョン |
   | :------------- | :--------- |
@@ -392,9 +392,11 @@ $ tree -L 2 -a
 
 ## :book: 参考
 
-- [公式 / 言語ガイド: Elixir](https://circleci.com/docs/ja/2.0/language-elixir/)
+- [Elixir](https://elixir-lang.org/)
 
-  - [GitHub (CircleCI-Public / circleci-demo-elixir-phoenix)](https://github.com/CircleCI-Public/circleci-demo-elixir-phoenix/blob/master/.circleci/config.yml)
+  - [Documentation](https://elixir-lang.org/docs.html)
+
+- [Phoenix](https://www.phoenixframework.org/)
 
 - Docker
 
@@ -403,3 +405,9 @@ $ tree -L 2 -a
   - [Docker Official Image / Postgres image](https://hub.docker.com/_/postgres)
 
   - [Dockerfile のベストプラクティス](https://docs.docker.jp/engine/articles/dockerfile_best-practice.html)
+
+- CircleCI
+
+  - [公式 / 言語ガイド: Elixir](https://circleci.com/docs/ja/2.0/language-elixir/)
+
+  - [GitHub (CircleCI-Public / circleci-demo-elixir-phoenix)](https://github.com/CircleCI-Public/circleci-demo-elixir-phoenix/blob/master/.circleci/config.yml)
