@@ -1,6 +1,6 @@
 # Phoenix Dev experiment containers
 
-[![miolab](https://circleci.com/gh/miolab/circleci_elixir.svg?style=svg)](https://github.com/miolab/circleci_elixir)
+[![miolab](https://circleci.com/gh/miolab/phoenix_dev_containers.svg?style=svg)](https://github.com/miolab/phoenix_dev_containers)
 
 Elixir製Webフレームワーク **Phoenix** の **Docker** 開発環境を構築します
 
@@ -77,7 +77,7 @@ $ tree -L 2 -a
 - プロジェクト準備
 
   ```bash
-  $ git clone https://github.com/miolab/circleci_elixir.git
+  $ git clone https://github.com/miolab/phoenix_dev_containers.git
 
   $ rm -rf app/my_app
 
