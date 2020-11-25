@@ -1,6 +1,6 @@
 # Phoenix Dev experiment containers
 
-[![miolab](https://circleci.com/gh/miolab/circleci_elixir.svg?style=svg)](https://github.com/miolab/circleci_elixir)
+[![miolab](https://circleci.com/gh/miolab/phoenix_dev_containers.svg?style=svg)](https://github.com/miolab/phoenix_dev_containers)
 
 Elixir製Webフレームワーク **Phoenix** の **Docker** 開発環境を構築します
 
@@ -22,8 +22,6 @@ Elixir製Webフレームワーク **Phoenix** の **Docker** 開発環境を構�
 
   ```
   $ docker-compose run --rm app elixir --version
-  Creating circleci_elixir_app_run ... done
-  Erlang/OTP 23 [erts-11.1.2] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:1] [hipe]
 
   Elixir 1.11.2 (compiled with Erlang/OTP 23)
   ```
@@ -32,8 +30,8 @@ Elixir製Webフレームワーク **Phoenix** の **Docker** 開発環境を構�
 
   ```
   $ docker-compose run --rm app mix archive
-  Creating circleci_elixir_app_run ... done
   * hex-0.20.6
+
   * phx_new-1.5.7
   ```
 
@@ -41,7 +39,7 @@ Elixir製Webフレームワーク **Phoenix** の **Docker** 開発環境を構�
 
   ```
   $ docker-compose run --rm db psql --version
-  Creating circleci_elixir_db_run ... done
+
   psql (PostgreSQL) 12.4
   ```
 
@@ -49,7 +47,7 @@ Elixir製Webフレームワーク **Phoenix** の **Docker** 開発環境を構�
 
   ```
   $ docker-compose run --rm app bash -c "node --version && npm --version"
-  Creating circleci_elixir_app_run ... done
+
   v14.15.1
   6.14.8
   ```
@@ -77,7 +75,7 @@ $ tree -L 2 -a
 - プロジェクト準備
 
   ```bash
-  $ git clone https://github.com/miolab/circleci_elixir.git
+  $ git clone https://github.com/miolab/phoenix_dev_containers.git
 
   $ rm -rf app/my_app
 
@@ -148,8 +146,8 @@ $ tree -L 2 -a
 
           Name                       Command               State            Ports
   ----------------------------------------------------------------------------------------
-  circleci_elixir_app_1   sh -c cd my_app/ && mix ph ...   Up      0.0.0.0:4000->4000/tcp
-  circleci_elixir_db_1    docker-entrypoint.sh postgres    Up      0.0.0.0:15432->5432/tcp
+  phoenix_dev_containers_app_1   sh -c cd my_app/ && mix ph ...   Up      0.0.0.0:4000->4000/tcp
+  phoenix_dev_containers_db_1    docker-entrypoint.sh postgres    Up      0.0.0.0:15432->5432/tcp
   ```
 
   ```bash
@@ -171,7 +169,7 @@ $ tree -L 2 -a
   ```bash
   $ docker-compose run --rm app bash -c "cd my_app && mix phx.routes"
 
-  Creating circleci_elixir_app_run ... done
+  Creating phoenix_dev_containers_app_run ... done
             page_path  GET  /                          MyAppWeb.PageController :index
   live_dashboard_path  GET  /dashboard                 Phoenix.LiveView.Plug :home
   live_dashboard_path  GET  /dashboard/:page           Phoenix.LiveView.Plug :page
@@ -244,7 +242,7 @@ $ tree -L 2 -a
   ```bash
   $ docker-compose run --rm app bash -c "cd my_app && mix phx.routes"
 
-  Creating circleci_elixir_app_run ... done
+  Creating phoenix_dev_containers_app_run ... done
             page_path  GET     /                          MyAppWeb.PageController :index
         aboutme_path  GET     /aboutme                    MyAppWeb.AboutmeController :index
   live_dashboard_path  GET     /dashboard                 Phoenix.LiveView.Plug :home
