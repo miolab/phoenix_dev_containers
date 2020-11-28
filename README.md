@@ -158,7 +158,10 @@ $ tree -L 2 -a
   $ docker-compose restart app
   ```
 
-  - ブラウザ確認 [`localhost:4000`](localhost:4000)
+  - ブラウザ確認 [`localhost:4000`](http://localhost:4000)
+
+    <img width="687" alt="phx_init_page" src="https://user-images.githubusercontent.com/33124627/100324924-3c566300-300b-11eb-9f84-e5ff80c11a07.png">
+
 
   - `docker-compose logs` 叩いて、ログ中にエラーぽいのが出てないか念のため確認しておく
 
@@ -409,3 +412,7 @@ $ tree -L 2 -a
   - [公式 / 言語ガイド: Elixir](https://circleci.com/docs/ja/2.0/language-elixir/)
 
   - [GitHub (CircleCI-Public / circleci-demo-elixir-phoenix)](https://github.com/CircleCI-Public/circleci-demo-elixir-phoenix/blob/master/.circleci/config.yml)
+
+  - [Linux Machine Executor Images - October (Q4) Update](https://discuss.circleci.com/t/linux-machine-executor-images-october-q4-update/37847)
+
+    - [日本語版](https://circleci.com/docs/ja/2.0/executor-types/#machine-%E3%81%AE%E4%BD%BF%E7%94%A8)
