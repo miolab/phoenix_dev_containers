@@ -389,6 +389,43 @@ $ tree -L 2 -a
 
   All Green でパスしていることを確認できました
 
+### __mix format__
+
+コードをフォーマットします
+
+- フォーマットされているかチェック （`mix format  --check-formatted`）
+
+  ```terminal
+  $ docker-compose run --rm app sh -c "cd my_app && mix format --check-formatted"
+  Creating phoenix_dev_containers_app_run ... done
+  ** (Mix) mix format failed due to --check-formatted.
+  The following files are not formatted:
+
+    * test/my_app_web/controllers/user_controller_test.exs
+    * test/my_app/accounts_test.exs
+    * config/test.exs
+    * lib/my_app_web/router.ex
+    * priv/repo/migrations/20201122221317_create_users.exs
+  ```
+
+  フォーマットされていない場合は、上記のように警告表示されます
+
+- フォーマットをかける （`mix format`）
+
+  ```terminal
+  $ docker-compose run --rm app sh -c "cd my_app && mix format"
+  Creating phoenix_dev_containers_app_run ... done
+  ```
+
+- 結果確認
+
+  ```terminal
+  $ docker-compose run --rm app sh -c "cd my_app && mix format --check-formatted"
+  Creating phoenix_dev_containers_app_run ... done
+  ```
+
+  ぶじにフォーマットされました
+
 ---
 
 ## :book: 参考
