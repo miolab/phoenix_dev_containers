@@ -61,6 +61,13 @@ jobs:
             docker-compose logs
 
       - run:
+          name: Mix format
+          command: |
+            set -x
+            docker-compose restart
+            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix format --check-formatted"
+
+      - run:
           name: Mix test
           command: |
             set -x
