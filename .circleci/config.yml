@@ -65,7 +65,7 @@ jobs:
           command: |
             set -x
             docker-compose restart
-            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix format --check-format"
+            docker-compose run --rm app sh -c "pwd && ls && cd my_app && mix format --check-formatted"
 
       - run:
           name: Mix test
