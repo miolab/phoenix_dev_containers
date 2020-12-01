@@ -17,7 +17,7 @@ defmodule MyAppWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :index)
-    resources "/users", UserController    # -> add
+    resources "/users", UserController
     get("/aboutme", AboutmeController, :index)
   end
 

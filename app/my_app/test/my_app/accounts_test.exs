@@ -7,7 +7,11 @@ defmodule MyApp.AccountsTest do
     alias MyApp.Accounts.User
 
     @valid_attrs %{bio: "some bio", email: "some email", name: "some name"}
-    @update_attrs %{bio: "some updated bio", email: "some updated email", name: "some updated name"}
+    @update_attrs %{
+      bio: "some updated bio",
+      email: "some updated email",
+      name: "some updated name"
+    }
     @invalid_attrs %{bio: nil, email: nil, name: nil}
 
     def user_fixture(attrs \\ %{}) do
