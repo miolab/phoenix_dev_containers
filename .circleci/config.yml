@@ -39,11 +39,11 @@ jobs:
             docker-compose run --rm db bash -c "psql --version"
             docker-compose run --rm app bash -c "node --version && npm --version"
 
-      - run:
-          name: Mix deps.get
-          command: |
-            set -x
-            docker-compose run --rm app bash -c "cd my_app && ls && mix deps.get && mix deps.compile"
+      # - run:
+      #     name: Mix deps.get
+      #     command: |
+      #       set -x
+      #       docker-compose run --rm app bash -c "cd my_app && ls && mix deps.get && mix deps.compile"
 
       - run:
           name: Npm install in assets directory
