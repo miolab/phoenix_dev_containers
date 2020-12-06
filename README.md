@@ -214,7 +214,7 @@ $ tree -L 2 -a
 
 - ビュー追加（新規作成）
 
-  `app/my_app/lib/my_app_web/views/aboutme.ex`
+  `app/my_app/lib/my_app_web/views/aboutme_view.ex`
 
   ```elixir
   defmodule MyAppWeb.AboutmeView do
