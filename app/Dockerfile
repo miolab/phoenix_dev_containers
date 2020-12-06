@@ -14,9 +14,11 @@ RUN apt-get update -y && \
   sudo \
   tar
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-RUN apt-get install -y nodejs
-RUN npm install npm@latest -g
+RUN apt-get install -y nodejs npm
+RUN npm install -g n
+RUN n 14.15.1
+RUN apt-get purge -y nodejs npm
+RUN node -v && npm -v
 
 RUN yes | mix local.hex
 RUN mix local.rebar --force
