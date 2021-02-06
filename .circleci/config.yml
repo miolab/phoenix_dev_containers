@@ -16,7 +16,8 @@ jobs:
           command: |
             set -x
             docker-compose build
-            docker-compose run --rm app bash -c "mix --version && mix archive && psql --version && node --version && npm --version"
+            docker-compose run --rm app bash -c "mix --version && mix archive && node --version && npm --version"
+            docker-compose run --rm db psql --version
       - run:
           name: Mix deps.get & compile
           command: |
