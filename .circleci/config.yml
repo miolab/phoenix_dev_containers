@@ -1,34 +1,38 @@
 version: 2.1
-jobs:
-  build:
+
+executors:
+  machine-executor:
     machine:
       image: ubuntu-1604:202010-01
 
+jobs:
+  build:
+    executor:
+      name: machine-executor
     steps:
       - checkout
-
       - run:
           name: Build Docker containers
           command: |
             set -x
             docker-compose build
-            docker-compose run --rm app bash -c "mix --version"
-            docker-compose run --rm app mix archive
-            docker-compose run --rm db bash -c "psql --version"
-            docker-compose run --rm app bash -c "node --version && npm --version"
-
+            docker-compose run --rm app bash -c "mix --version && mix archive && psql --version && node --version && npm --version"
       - run:
-          name: Mix deps.get
+          name: Mix deps.get & compile
           command: |
             set -x
-            docker-compose run --rm app bash -c "cd my_app && ls && mix deps.get && mix deps.compile"
-
+            docker-compose run --rm app bash -c "ls && mix deps.get && mix deps.compile"
+      - run:
+          name: Check directories and existed mix dependencies
+          command: |
+            set -x
+            pwd && ls -a && ls -a app && ls app/deps
+            docker-compose exec app bash -c "mix deps"
       - run:
           name: Npm install in assets directory
           command: |
             set -x
-            docker-compose run --rm app bash -c "cd my_app/assets && ls && npm install && node node_modules/webpack/bin/webpack.js --mode development"
-
+            docker-compose run --rm app bash -c "cd assets && ls && npm install && node node_modules/webpack/bin/webpack.js --mode development"
       - run:
           name: Run Docker containers
           command: |
@@ -37,22 +41,18 @@ jobs:
             sleep 5
             docker ps -f status=running
             docker-compose logs
-
       - run:
           name: Mix format
           command: |
             set -x
-            docker-compose exec app bash -c "cd my_app && mix format --check-formatted"
-
+            docker-compose exec app mix format --check-formatted
       - run:
           name: Mix test
           command: |
             set -x
-            docker-compose exec app bash -c "cd my_app && mix test"
-
+            docker-compose exec app bash -c "MIX_ENV=test mix test"
       - run:
-          name: Down Docker containers and Finish pipeline
+          name: Finish build pipeline
           command: |
             set -x
-            docker-compose down --rmi all --volumes --remove-orphans
             echo "Finish pipeline"
