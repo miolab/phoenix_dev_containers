@@ -2,57 +2,43 @@
 
 [![miolab](https://circleci.com/gh/miolab/phoenix_dev_containers.svg?style=svg)](https://github.com/miolab/phoenix_dev_containers)
 
-Elixir製Webフレームワーク **Phoenix** の **Docker** 開発環境を構築します
+Elixir 製 Web フレームワーク **Phoenix** の **Docker** 開発環境を構築します
 
 ---
 
-## :star: 実行環境
-
-### 基本開発環境
-
-  |                | バージョン |
-  | :------------- | :--------- |
-  | macOS          |            |
-  | Docker         | 19.03.13   |
-  | Docker-compose | 1.27.4     |
-
-### __Container Image バージョン__
+## 実行環境（バージョン）・初期ディレクトリ構成
 
 - Elixir
 
   ```
   $ docker-compose run --rm app elixir --version
-
-  Elixir 1.11.2 (compiled with Erlang/OTP 23)
+  Elixir 1.11.3 (compiled with Erlang/OTP 23)
   ```
 
 - Phoenix
 
   ```
   $ docker-compose run --rm app mix archive
-  * hex-0.20.6
-
+  * hex-0.21.1
   * phx_new-1.5.7
-  ```
-
-- PostgreSQL
-
-  ```
-  $ docker-compose run --rm db psql --version
-
-  psql (PostgreSQL) 12.4
   ```
 
 - Node & npm
 
   ```
   $ docker-compose run --rm app bash -c "node --version && npm --version"
-
-  v14.15.1
-  6.14.8
+  v14.15.4
+  6.14.10
   ```
 
-### __初期ディレクトリ構成__
+- PostgreSQL
+
+  ```
+  $ docker-compose run --rm db psql --version
+  psql (PostgreSQL) 12.4
+  ```
+
+### **初期ディレクトリ構成**
 
 ```bash
 $ tree -L 2 -a
@@ -68,21 +54,25 @@ $ tree -L 2 -a
 └── docker-compose.yml
 ```
 
-## :star: 使い方
+---
 
-### __ビルド 〜 Phoenix コンテナ立ち上げ__
+## 使い方
+
+### **ビルド 〜 Phoenix コンテナ立ち上げ**
 
 - プロジェクト準備
 
   ```bash
   $ git clone https://github.com/miolab/phoenix_dev_containers.git
 
-  $ rm -rf app/my_app
+  $ rm -rf app/
+
+  $ curl https://raw.githubusercontent.com/miolab/phoenix_dev_containers/master/app/Dockerfile >> app/Dockerfile
 
   $ cp .env.sample .env
   ```
 
-  上記コマンドで、あらかじめ入っている `app/my_app` は削除しておいてください
+  上記コマンドで、あらかじめ入っている `app/` は削除しておいてください
 
 - ビルド〜プロジェクト作成
 
@@ -94,7 +84,7 @@ $ tree -L 2 -a
   ```
 
   ```bash
-  $ docker-compose run --rm app mix phx.new my_app
+  $ docker-compose run --rm app mix phx.new . --app my_app
 
       .
       .
@@ -104,7 +94,7 @@ $ tree -L 2 -a
       .
   We are almost there! The following steps are missing:
 
-      $ cd my_app
+      $ cd app
 
   Then configure your database in config/dev.exs and run:
 
@@ -122,7 +112,7 @@ $ tree -L 2 -a
 
 - 生成されたファイルの中身を書き換える
 
-  `app/my_app/config/dev.exs`
+  `app/config/dev.exs`
 
   ```elixir
   # Configure your database
@@ -133,7 +123,7 @@ $ tree -L 2 -a
     hostname: "db",        # <-- update
   ```
 
-  - `.env` で設定してある環境変数をつかいます
+  - `.env` で設定してある環境変数をつかう
 
 - コンテナ起動
 
@@ -144,33 +134,44 @@ $ tree -L 2 -a
   ```bash
   $ docker-compose ps
 
-          Name                       Command               State            Ports
-  ----------------------------------------------------------------------------------------
-  phoenix_dev_containers_app_1   sh -c cd my_app/ && mix ph ...   Up      0.0.0.0:4000->4000/tcp
-  phoenix_dev_containers_db_1    docker-entrypoint.sh postgres    Up      0.0.0.0:15432->5432/tcp
+            Name                       Command            State           Ports
+  ---------------------------------------------------------------------------------------
+  phoenix_dev_containers_app   sh -c mix phx.server        Up      0.0.0.0:4000->4000/tcp
+  _1                           --no-halt
+  phoenix_dev_containers_db_   docker-entrypoint.sh        Up      0.0.0.0:5432->5432/tcp
+  1                            postgres
   ```
 
+- データベース作成
+
   ```bash
-  $ docker-compose run --rm app bash -c "cd my_app && mix ecto.create"
+  $ docker-compose exec app mix ecto.create
+
+  The database for MyApp.Repo has been created
   ```
+
+- コンテナを再起動
 
   ```bash
   $ docker-compose restart app
   ```
 
-  - ブラウザ確認 [`localhost:4000`](http://localhost:4000)
+- ブラウザ確認
+
+  [`localhost:4000`](http://localhost:4000)
 
     <img width="687" alt="phx_init_page" src="https://user-images.githubusercontent.com/33124627/100324924-3c566300-300b-11eb-9f84-e5ff80c11a07.png">
 
-
   - `docker-compose logs` 叩いて、ログ中にエラーぽいのが出てないか念のため確認しておく
 
-### __新規ページを追加してみる__（任意）
+---
+
+### **新規ページを追加してみる**（任意）
 
 - 現在のルーティングを確認
 
   ```bash
-  $ docker-compose run --rm app bash -c "cd my_app && mix phx.routes"
+  $ docker-compose exec app mix phx.routes
 
   Creating phoenix_dev_containers_app_run ... done
             page_path  GET  /                          MyAppWeb.PageController :index
@@ -187,7 +188,7 @@ $ tree -L 2 -a
 
 - ルーティング設定（アップデート）
 
-  `app/my_app/lib/my_app_web/router.ex`
+  `app/lib/my_app_web/router.ex`
 
   ```elixir
   scope "/", MyAppWeb do
@@ -200,7 +201,7 @@ $ tree -L 2 -a
 
 - コントローラー追加（新規作成）
 
-  `app/my_app/lib/my_app_web/controllers/aboutme_controller.ex`
+  `app/lib/my_app_web/controllers/aboutme_controller.ex`
 
   ```elixir
   defmodule MyAppWeb.AboutmeController do
@@ -214,7 +215,7 @@ $ tree -L 2 -a
 
 - ビュー追加（新規作成）
 
-  `app/my_app/lib/my_app_web/views/aboutme_view.ex`
+  `app/lib/my_app_web/views/aboutme_view.ex`
 
   ```elixir
   defmodule MyAppWeb.AboutmeView do
@@ -224,15 +225,17 @@ $ tree -L 2 -a
 
 - テンプレート追加（新規作成）
 
-  `app/my_app/lib/my_app_web/templates/aboutme/index.html.eex`
+  `app/lib/my_app_web/templates/aboutme/index.html.eex`
 
   ```html
   <section class="phx-hero">
     <h1>オレオレコンテナをぜひ見てくれ</h1>
   </section>
   <section class="row">
-    <p>メリークリスマス！ 2020！<br>
-      プレゼンテッド・バイ im（あいえむ）</p>
+    <p>
+      メリークリスマス！ 2020！<br />
+      プレゼンテッド・バイ im（あいえむ）
+    </p>
   </section>
   ```
 
@@ -243,7 +246,7 @@ $ tree -L 2 -a
   ```
 
   ```bash
-  $ docker-compose run --rm app bash -c "cd my_app && mix phx.routes"
+  $ docker-compose exec app mix phx.routes
 
   Creating phoenix_dev_containers_app_run ... done
             page_path  GET     /                          MyAppWeb.PageController :index
@@ -259,27 +262,29 @@ $ tree -L 2 -a
 
   - `aboutme_path GET /aboutme MyAppWeb.AboutmeController :index` が追加できたことを確認しました
 
-  - ブラウザ確認 [`localhost:4000/aboutme`](localhost:4000/aboutme)
+  - ブラウザ確認 [`localhost:4000/aboutme`](http://localhost:4000/aboutme)
 
     <img src="https://user-images.githubusercontent.com/33124627/99958502-d2507a80-2dcc-11eb-8ba3-b89612fb1f60.png" width="455px">
 
-### __CRUD 設定__
+---
 
-- かんたんにざっと設計
+### **CRUD 設定**
 
-  |実装要件||
-  |:--|:--|
-  |Context名|Accounts|
-  |スキーマ名|User|
-  |テーブル名|users|
-  |カラムと型|name:string email:string bio:string|
+- ざっと設計
+
+  | 実装要件   |                                     |
+  | :--------- | :---------------------------------- |
+  | Context 名 | Accounts                            |
+  | スキーマ名 | User                                |
+  | テーブル名 | users                               |
+  | カラムと型 | name:string email:string bio:string |
 
 - WebUI を作成
 
   上記設計にしたがって、生成コマンド `mix phx.gen.html` を実行します
 
   ```bash
-  $ docker-compose exec app bash -c "cd my_app && mix phx.gen.html Accounts User users name:string email:string bio:string"
+  $ docker-compose exec app bash -c "mix phx.gen.html Accounts User users name:string email:string bio:string"
 
   * creating lib/my_app_web/controllers/user_controller.ex
   * creating lib/my_app_web/templates/user/edit.html.eex
@@ -290,7 +295,7 @@ $ tree -L 2 -a
   * creating lib/my_app_web/views/user_view.ex
   * creating test/my_app_web/controllers/user_controller_test.exs
   * creating lib/my_app/accounts/user.ex
-  * creating priv/repo/migrations/20201122221317_create_users.exs
+  * creating priv/repo/migrations/20210206060235_create_users.exs
   * creating lib/my_app/accounts.ex
   * injecting lib/my_app/accounts.ex
   * creating test/my_app/accounts_test.exs
@@ -304,7 +309,6 @@ $ tree -L 2 -a
   Remember to update your repository by running migrations:
 
       $ mix ecto.migrate
-
   ```
 
 - ルーティング設定（アップデート）
@@ -319,7 +323,7 @@ $ tree -L 2 -a
 
     にしたがい、ルーティング設定を行います
 
-  `app/my_app/lib/my_app_web/router.ex`
+  `app/lib/my_app_web/router.ex`
 
   ```elixir
   scope "/", MyAppWeb do
@@ -334,13 +338,13 @@ $ tree -L 2 -a
 - マイグレーション実行
 
   ```bash
-  $ docker-compose exec app bash -c "cd my_app && mix ecto.migrate"
+  $ docker-compose exec app mix ecto.migrate
 
-  22:27:54.834 [info]  == Running 20201122221317 MyApp.Repo.Migrations.CreateUsers.change/0 forward
+  06:08:17.081 [info]  == Running 20210206060235 MyApp.Repo.Migrations.CreateUsers.change/0 forward
 
-  22:27:54.902 [info]  create table users
+  06:08:17.173 [info]  create table users
 
-  22:27:55.109 [info]  == Migrated 20201122221317 in 0.1s
+  06:08:17.300 [info]  == Migrated 20210206060235 in 0.0s
 
   ```
 
@@ -350,7 +354,9 @@ $ tree -L 2 -a
   $ docker-compose restart app
   ```
 
-  - ブラウザ確認 [`localhost:4000/users/new`](localhost:4000/users/new)
+  ブラウザ確認
+
+  - [`localhost:4000/users/new`](http://localhost:4000/users/new)
 
     <img width="455px" alt="webui1" src="https://user-images.githubusercontent.com/33124627/100085123-00968e80-2e8f-11eb-9d2a-63a9f0ca14d6.png">
 
@@ -358,11 +364,11 @@ $ tree -L 2 -a
 
     CRUD ページを作成できていることを確認できました
 
-### __テスト__
+### **テスト**
 
-- テスト側のDB接続情報設定（アップデート）
+- テスト側の DB 接続情報設定（アップデート）
 
-  `app/my_app/config/test.exs`
+  `app/config/test.exs`
 
   ```bash
   config :my_app, MyApp.Repo,
@@ -376,36 +382,31 @@ $ tree -L 2 -a
 - テスト実行
 
   ```bash
-  $ docker-compose exec app bash -c "cd my_app && mix test"
+  $ docker-compose exec app bash -c "MIX_ENV=test mix test"
 
-  Compiling 23 files (.ex)
-  Generated my_app app
-  ...................
-
+    .
+    .
   Finished in 0.9 seconds
   19 tests, 0 failures
-
   ```
 
   All Green でパスしていることを確認できました
 
-### __mix format__
+### **mix format**
 
 コードをフォーマットします
 
-- フォーマットされているかチェック （`mix format  --check-formatted`）
+- フォーマットされているかチェック （`mix format --check-formatted`）
 
-  ```terminal
-  $ docker-compose run --rm app sh -c "cd my_app && mix format --check-formatted"
+  ```bash
+  $ docker-compose exec app bash -c "mix format --check-formatted"
   Creating phoenix_dev_containers_app_run ... done
   ** (Mix) mix format failed due to --check-formatted.
   The following files are not formatted:
 
-    * test/my_app_web/controllers/user_controller_test.exs
     * test/my_app/accounts_test.exs
-    * config/test.exs
-    * lib/my_app_web/router.ex
-    * priv/repo/migrations/20201122221317_create_users.exs
+    * test/my_app_web/controllers/user_controller_test.exs
+    * priv/repo/migrations/20210206060235_create_users.exs
   ```
 
   フォーマットされていない場合は、上記のように警告表示されます
@@ -413,14 +414,14 @@ $ tree -L 2 -a
 - フォーマットをかける （`mix format`）
 
   ```terminal
-  $ docker-compose run --rm app sh -c "cd my_app && mix format"
+  $ docker-compose exec app mix format
   Creating phoenix_dev_containers_app_run ... done
   ```
 
 - 結果確認
 
   ```terminal
-  $ docker-compose run --rm app sh -c "cd my_app && mix format --check-formatted"
+  $ docker-compose exec app bash -c "mix format --check-formatted"
   Creating phoenix_dev_containers_app_run ... done
   ```
 
@@ -428,7 +429,7 @@ $ tree -L 2 -a
 
 ---
 
-## :book: 参考
+## 参考
 
 - [Elixir](https://elixir-lang.org/)
 

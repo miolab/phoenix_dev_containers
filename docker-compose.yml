@@ -14,9 +14,7 @@ services:
     stdin_open: true
     tty: true
     command:
-      sh -c
-        "cd ${PROJECT_NAME}/ &&
-        mix phx.server"
+      sh -c "mix phx.server --no-halt"
     networks:
       - backend
 
