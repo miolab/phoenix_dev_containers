@@ -28,12 +28,12 @@ jobs:
           command: |
             set -x
             pwd && ls -a && ls -a app && ls app/deps
-            docker-compose exec app bash -c "mix deps"
+            docker-compose run --rm app mix deps
       - run:
           name: Npm install in assets directory
           command: |
             set -x
-            docker-compose run --rm app bash -c "cd assets && ls && npm install && node node_modules/webpack/bin/webpack.js --mode development"
+            docker-compose run --rm app bash -c "cd assets && ls && npm i && node node_modules/webpack/bin/webpack.js --mode development"
       - run:
           name: Run Docker containers
           command: |
