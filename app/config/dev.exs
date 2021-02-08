@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :my_app, MyApp.Repo,
-  username: "postgres",
-  password: "password",
+  username: System.get_env("POSTGRES_USER"),
+  password: System.get_env("POSTGRES_PASSWORD"),
   database: "testdb",
   hostname: "db",
   show_sensitive_data_on_connection_error: true,
