@@ -13,7 +13,7 @@ config :my_app,
 # Configures the endpoint
 config :my_app, MyAppWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "O1AdYC1fv/Gxu6WYOBcaq7C6887ALz5lK9nGX0D+JUkfufic2uLhz+WXV5N38Hp5",
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   render_errors: [view: MyAppWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: MyApp.PubSub,
   live_view: [signing_salt: "N1KSn1za"]
