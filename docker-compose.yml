@@ -8,14 +8,17 @@ services:
   app:
     build: ./app
     environment:
+      - PORT=${PHOENIX_PORT}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POOL_SIZE=${POOL_SIZE}
     volumes:
       - ./app:/usr/src/app
     ports:
-      - 4000:4000
+      - ${PHOENIX_PORT}:4000
     stdin_open: true
     tty: true
     command:
@@ -25,10 +28,10 @@ services:
 
   db:
     build: ./db
-    ports:
-      - ${POSTGRES_PORT}:5432
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - ${POSTGRES_PORT}:5432
     volumes:
       - ./db/postgres/tmp/data:/var/lib/postgresql/data
     restart: always
