@@ -35,7 +35,7 @@ jobs:
             set -x
             docker-compose run --rm app bash -c "cd assets && ls && npm i && node node_modules/webpack/bin/webpack.js --mode development"
       - run:
-          name: Run Docker containers
+          name: Run Docker containers (include show logs)
           command: |
             set -x
             docker-compose up -d
@@ -56,4 +56,4 @@ jobs:
           name: Finish build pipeline
           command: |
             set -x
-            echo "Finish pipeline"
+            echo "Finished build pipeline."
