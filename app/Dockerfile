@@ -1,5 +1,12 @@
 FROM elixir:1.11.3-slim
 
+ENV MIX_HOME=/root/.mix \
+  MIX_ENV=prod \
+  SECRET_KEY_BASE=${SECRET_KEY_BASE} \
+  DATABASE_URL=${DATABASE_URL}
+
+COPY . /usr/src/app
+
 WORKDIR /usr/src/app
 
 RUN apt-get update -y && \
