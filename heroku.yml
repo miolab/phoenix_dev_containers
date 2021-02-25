@@ -1,0 +1,19 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+  config:
+    POSTGRES_PASSWORD: POSTGRES_PASSWORD
+
+build:
+  docker:
+    web: app/Dockerfile
+  config:
+      MIX_ENV: prod
+      SECRET_KEY_BASE: SECRET_KEY_BASE
+      POSTGRES_USER: POSTGRES_USER
+      POSTGRES_PASSWORD: POSTGRES_PASSWORD
+      POSTGRES_DB: POSTGRES_DB
+      POSTGRES_HOSTNAME: POSTGRES_HOSTNAME
+      POOL_SIZE: POOL_SIZE
+      DATABASE_URL: DATABASE_URL
